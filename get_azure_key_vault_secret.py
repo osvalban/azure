@@ -42,7 +42,10 @@ for secret_name in secret_name_list:
     except OSError as e:
         sys.exit("Failed to request Azure access token. " +
                  "Are you running script on an Azure Linux VM?\n%s" % e)
-
+    except KeyError as e:
+        sys.exit("Could not access secret in Key Vault. Verify the VM " +
+                 "was granted access to vault with name '%s' " % key_vault_name +
+                 "and that a key with name '%s' exists in it." % secret_name)
     try:
         # create .txt of secret value contents with rw permissions
         # restricted to the current user. File is located in home
